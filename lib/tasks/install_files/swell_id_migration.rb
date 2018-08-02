@@ -33,6 +33,46 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 		add_index :friendly_id_slugs, :sluggable_type
 
 
+		create_table :geo_addresses do |t|
+			t.references	:user
+			t.references	:geo_state
+			t.references	:geo_country
+			t.integer 		:status
+			t.string 		:hash_code
+			t.string		:address_type
+			t.string		:title
+			t.string		:first_name
+			t.string		:last_name
+			t.string		:street
+			t.string		:street2
+			t.string		:city
+			t.string		:state
+			t.string		:zip
+			t.string		:phone
+			t.float			:latitude
+			t.float 		:longitude
+			t.boolean		:validated, default: false
+			t.boolean		:preferred, default: false
+			t.timestamps
+		end
+		add_index :geo_addresses, [ :geo_country_id, :geo_state_id ]
+		add_index :geo_addresses, :hash_code
+
+		create_table :geo_countries do |t|
+			t.string   :name
+			t.string   :abbrev
+			t.timestamps
+		end
+
+		create_table :geo_states do |t|
+			t.references	:geo_country
+			t.string		:name
+			t.string		:abbrev
+			t.string		:country
+			t.timestamps
+		end
+
+
 		create_table :oauth_credentials do |t|
 			t.references	:user
 			t.string		:name
@@ -52,7 +92,7 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 
 
 		create_table :users do |t|
-			t.string		:name
+			t.string		:username
 			## Database authenticatable
 			t.string		:email,					null: false, default: ""
 			t.string		:encrypted_password,	null: false, default: ""
@@ -61,27 +101,19 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 			t.string 		:first_name
 			t.string 		:last_name
 			t.string 		:avatar
-			t.string		:cover_image
+
 			t.datetime 		:dob
 			t.string		:gender
-			t.string		:location
-			t.string		:address1
-			t.string		:address2
-			t.string		:city
-			t.string		:state
-			t.string		:zip
-			t.string		:phone
+			
 			t.integer		:status,				default: 1
 			t.integer		:role,					default: 1
 			t.integer		:level,					default: 1
 
 			t.string 		:website_url
 			t.text 			:bio
-			t.string		:short_bio
-			t.text 			:sig
+
 			t.string		:ip
-			t.float			:latitude
-			t.float 		:longitude
+			t.string		:ip_country
 			t.string		:timezone, default: 'Pacific Time (US & Canada)'
 
 			## Recoverable
@@ -121,7 +153,7 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 
 			t.timestamps
 		end
-		add_index :users, :name
+		add_index :users, :username
 		add_index :users, :slug, 					unique: true
 		add_index :users, :email,					unique: true
 		add_index :users, :reset_password_token,	unique: true
