@@ -72,6 +72,15 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 			t.timestamps
 		end
 
+		create_table :identifiers do |t|
+			t.references 	:parent_obj, polymorphic: true
+			t.string		:provider
+			t.string		:label 
+			t.string 		:identifier 
+			t.hstore		:properties, default: {}
+			t.timestamps
+		end
+		add_index :identifiers, [ :identifier, :provider, :label ], unique: true
 
 		create_table :oauth_credentials do |t|
 			t.references	:user

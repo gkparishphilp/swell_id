@@ -1,11 +1,11 @@
 module SwellId
 	module Concerns
 
-		module EmailConcern
+		module IdentifierConcern
 			extend ActiveSupport::Concern
 
 			included do		
-				
+				belongs_to :parent_obj, polymorphic: true
 			end
 
 
@@ -20,7 +20,7 @@ module SwellId
 
 			####################################################
 			# Instance Methods
-			
+
 		
 
 		end
