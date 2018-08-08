@@ -12,7 +12,7 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 			t.integer 			:status, default: 0
 			t.string			:first_name
 			t.string			:last_name
-			t.hstore			:properties, default: {}
+			t.hstore			:properties, 		default: {}
 			t.timestamps
 		end
 		add_index :emails, [:address, :status]
@@ -51,8 +51,8 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 			t.string		:phone
 			t.float			:latitude
 			t.float 		:longitude
-			t.boolean		:validated, default: false
-			t.boolean		:preferred, default: false
+			t.boolean		:validated, 			default: false
+			t.boolean		:preferred, 			default: false
 			t.timestamps
 		end
 		add_index :geo_addresses, [ :geo_country_id, :geo_state_id ]
@@ -77,7 +77,7 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 			t.string		:provider
 			t.string		:label 
 			t.string 		:identifier 
-			t.hstore		:properties, default: {}
+			t.hstore		:properties, 			default: {}
 			t.timestamps
 		end
 		add_index :identifiers, [ :identifier, :provider, :label ], unique: true
@@ -91,7 +91,7 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 			t.string		:refresh_token
 			t.string		:secret
 			t.datetime		:expires_at
-			t.integer		:status,		default: 1
+			t.integer		:status,				default: 1
 			t.timestamps
 		end
 		add_index :oauth_credentials, :provider
@@ -156,9 +156,9 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 			## Token authenticatable
 			t.string		:authentication_token
 
-			t.string 		:tags, array: true, default: '{}'
-			t.hstore		:properties, default: {}
-			t.hstore		:settings
+			t.text 			:tags, array: true, 	default: []
+			t.hstore		:properties, 			default: {}
+			t.hstore		:settings, 				default: {}
 
 			t.timestamps
 		end
