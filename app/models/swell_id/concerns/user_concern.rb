@@ -5,10 +5,13 @@ module SwellId
 			extend ActiveSupport::Concern
 
 			included do				
+		
+				acts_as_taggable_array_on :tags
+				
+				devise 		:database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :authentication_keys => [:login]
+
 				include FriendlyId
 				friendly_id :slugger, use: :slugged
-				
-				acts_as_taggable_array_on :tags
 
 				attr_accessor	:login
 
@@ -20,23 +23,7 @@ module SwellId
 
 			module ClassMethods
 
-				def find_for_database_authentication(warden_conditions)
-					conditions = warden_conditions.dup
-					if login = conditions.delete(:login)
-						where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
-					elsif conditions.has_key?(:username) || conditions.has_key?(:email)
-						where(conditions.to_h).first
-					end
-				end
-
-				def find_first_by_auth_conditions( warden_conditions )
-					conditions = warden_conditions.dup
-					if login = conditions.delete( :login )
-						where( conditions ).where( ["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }] ).first
-					else
-						where( conditions ).first
-					end
-				end
+				
 
 
 			end
@@ -60,7 +47,7 @@ module SwellId
 				# abstracts avatar path (uses gravatar if no avatar)
 				# call as avatar_url( use_gravatar: true ) to over-ride avatar and force gravatar
 				opts[:default] ||= 'identicon'
-				protocol = ( opts.present? && opts.delete( :protocol ) ) || SwellMedia.default_protocol
+				protocol = ( opts.present? && opts.delete( :protocol ) ) || 'https'
 
 				if opts[:use_gravatar] || self.avatar.blank?
 					return "#{protocol}://gravatar.com/avatar/" + Digest::MD5.hexdigest( self.email ) + "?d=#{opts[:default]}"
@@ -89,6 +76,12 @@ module SwellId
 					self.first_name = name_array.shift
 					self.last_name = name_array.join( ' ' )
 				end
+			end
+
+			def slugger
+				return self.username if self.username.present?
+				return self.full_name unless self.full_name.blank?
+				return self.email.split( /@/ ).first
 			end
 
 			def tags_csv

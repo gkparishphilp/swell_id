@@ -1,0 +1,34 @@
+
+.container
+	.row
+		.col-sm-8.col-sm-offset-2{ style: "padding: 4em;" }
+			%h2.center-text
+				Login
+			#login-box{ style: 'padding:32px;border:1px #aaa solid;margin-bottom:8em;' }
+				#login-box-holder
+					.row
+						.col-xs-12
+							%header#login-header
+								#login-logo
+									=# image_tag 'logo_wht.png'
+							#login-box-inner
+
+								= form_for resource, as: resource_name, url: user_session_path( resource_name ), role: :form do |f|
+									.form-group
+										.input-group
+											%span.input-group-addon
+												%i.fa.fa-user
+											= f.text_field :login, autofocus: true, placeholder: "email", class: 'form-control'
+									.form-group
+										.input-group
+											%span.input-group-addon
+												%i.fa.fa-key
+											= f.password_field :password, placeholder: "password", class: 'form-control'
+								
+									.row
+										.col-sm-6.col-sm-offset-3
+											= f.submit "Login", class: 'btn btn-primary col-xs-12'
+
+									
+
+

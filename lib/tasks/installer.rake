@@ -9,7 +9,9 @@ namespace :swell_id do
 					'geo_address.rb' => 'app/models',
 					'geo_state.rb' => 'app/models',
 					'geo_country.rb' => 'app/models',
+					'sessions_controller.rb' => 'app/controllers',
 					'swell_id.rb' => 'config/initializers',
+					'routes.rb' => 'config',
 					'devise.rb' => 'config/initializers'
 		}
 
@@ -25,6 +27,10 @@ namespace :swell_id do
     		FileUtils.cp_r source, target
 		end
 
+		dir = FileUtils::mkdir_p( File.join( Rails.root, 'app/views/devise/sessions/' ) )
+		source = File.join( Gem.loaded_specs["swell_id"].full_gem_path, "lib/tasks/install_files", 'sessions_new.html.haml' )
+		target = File.join( Rails.root, 'app/views/devise/sessions/', 'new.html.haml' )
+		FileUtils.cp_r source, target
 
 		# migrations
 

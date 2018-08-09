@@ -6,7 +6,7 @@ require 'friendly_id'
 require 'pundit'
 
 module SwellId
-
+	
 	class << self
 
 		# engine configuration settings accessors

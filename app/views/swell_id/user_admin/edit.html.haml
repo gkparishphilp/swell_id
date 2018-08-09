@@ -1,0 +1,94 @@
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					= link_to 'User Admin', user_admin_index_path
+				%li
+					%strong
+						Edit
+						= @user.to_s
+		.col-xs-2
+			%a.btn.btn-danger{ href: user_admin_path( @user ), data: { method: 'delete', confirm: 'Are you sure?' } }
+				Delete
+
+
+
+	= form_for @user, url: user_admin_path( @user ), method: :put do |f|
+		.row
+			.col-xs-8
+				.row
+					.col-xs-6
+						= f.label :first_name
+						= f.text_field :first_name, class: 'form-control'
+					.col-xs-6
+						= f.label :last_name
+						= f.text_field :last_name, class: 'form-control'
+
+				.row
+					.col-xs-6
+						= f.label :email
+						= f.text_field :email, class: 'form-control'
+					.col-xs-6
+						= f.label :username, 'User Name'
+						= f.text_field :username, class: 'form-control'
+
+				.row{ style: 'margin: 1em auto;' }
+					.col-xs-2
+						= @user.avatar_tag class: 'img img-responsive img-rounded'
+					.col-xs-8
+						.form-group
+							= f.label :avatar
+							= f.text_field :avatar, class: 'form-control'
+						.form-group
+							= f.label :avatar_asset_url, 'Remote Upload Avatar URL'
+							= f.text_field :avatar_asset_url, class: 'form-control'
+
+				.row
+					.col-xs-12
+						= f.label :short_bio
+						= f.text_field :short_bio, class: 'form-control'
+
+						= f.label :bio
+						= f.text_area :bio, class: 'form-control'
+				.row
+					.col-xs-12
+						= f.label :address1
+						= f.text_field :address1, class: 'form-control'
+
+						= f.label :address2
+						= f.text_field :address2, class: 'form-control'
+				.row
+					.col-xs-6
+						= f.label :city
+						= f.text_field :city, class: 'form-control'
+					.col-xs-3
+						= f.label :state
+						= f.text_field :state, class: 'form-control'
+					.col-xs-3
+						= f.label :zip
+						= f.text_field :zip, class: 'form-control'
+
+			.col-xs-4
+				- if params[:pw].present?
+					%h4
+						Temp PW:
+						= params[:pw]
+				.form-group
+					= f.label :created_at, 'Joined'
+
+					= @user.created_at
+
+				.form-group
+					= f.label :status
+					= f.collection_select :status, SwellMedia.registered_user_class.constantize.statuses, :first, :first, {}, class: 'form-control'
+				.form-group
+					= f.label :role
+					= f.collection_select :role, SwellMedia.registered_user_class.constantize.roles, :first, :first, {}, class: 'form-control'
+				.form-group
+					= f.label :tags_csv, 'Tags:'
+					= f.text_field :tags_csv, placeholder: 'Separate tags with commas', class: 'form-control'
+				.input-group
+					= f.submit 'Update', class: 'btn btn-primary'

@@ -15,6 +15,17 @@ class User < ApplicationRecord
 	validates_length_of			:password, within: Devise.password_length, allow_blank: true, if: Proc.new{ |u| u.encrypted_password_changed? && u.registered? }
 
 
+	def self.find_for_database_authentication(warden_conditions)
+		conditions = warden_conditions.dup
+		if login = conditions.delete(:login)
+			where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+		elsif conditions.has_key?(:username) || conditions.has_key?(:email)
+			where(conditions.to_h).first
+		end
+	end
+
+	
+
 	def avatar_asset_file=( file )
 		return false unless file.present?
 		asset = Pulitzer::ImageAsset.new(use: 'avatar', asset_type: 'image', status: 'active', parent_obj: self)

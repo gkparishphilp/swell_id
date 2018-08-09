@@ -1,0 +1,16 @@
+#new_user.modal.fade
+	.modal-dialog
+		.modal-content
+			.modal-header
+				%button.close{ type: :button, 'data-dismiss' => 'modal', 'aria-hidden' => 'true' }
+					&times;
+				%h4.modal-title
+					New User
+			= form_for User.new, url: swell_id.user_admin_index_path do |f|
+				.modal-body
+					= f.label :email
+					= f.text_field :email, class: 'form-control'
+				.modal-footer
+					%button.btn.btn-default{ type: :button, 'data-dismiss' => 'modal' }
+						Close
+					= f.submit 'Create', class: 'btn btn-primary'
