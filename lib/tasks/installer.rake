@@ -10,6 +10,7 @@ namespace :swell_id do
 					'geo_state.rb' => 'app/models',
 					'geo_country.rb' => 'app/models',
 					'sessions_controller.rb' => 'app/controllers',
+					'application_admin_controller.rb' => 'app/controllers',
 					'swell_id.rb' => 'config/initializers',
 					'routes.rb' => 'config',
 					'devise.rb' => 'config/initializers'

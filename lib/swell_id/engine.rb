@@ -3,7 +3,6 @@
 require 'acts-as-taggable-array-on'
 require 'devise'
 require 'friendly_id'
-require 'pundit'
 
 module SwellId
 	

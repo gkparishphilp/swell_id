@@ -16,13 +16,11 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 5.1.6"
+  s.add_dependency "rails", "~> 5.2.1"
 
   s.add_dependency "acts-as-taggable-array-on"
   s.add_dependency "devise"
   s.add_dependency "friendly_id", '~> 5.1.0'
-  s.add_dependency "pundit"
-
 
 
   s.add_development_dependency "sqlite3"

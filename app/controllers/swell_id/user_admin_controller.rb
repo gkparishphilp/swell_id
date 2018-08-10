@@ -1,10 +1,9 @@
 module SwellId
 
-	class UserAdminController < ApplicationController
-
-		include Concerns::AdminConcern
+	class UserAdminController < ApplicationAdminController
 
 		def create
+			
 			email = params[:user][:email]
 
 			user_attributes = { email: email, full_name: params[:user][:name], name: params[:user][:name].parameterize, ip: request.ip }
@@ -23,6 +22,8 @@ module SwellId
 			user.password = pw
 			user.password_confirmation = pw
 
+			authorize( user )
+
 			if user.save
 				set_flash "User added"
 	        	redirect_to edit_user_admin_path( user, pw: pw )
@@ -36,6 +37,8 @@ module SwellId
 
 		def destroy
 			@user = User.friendly.find( params[:id] )
+
+			authorize( @user, :admin_destroy )
 			@user.destroy
 			set_flash "#{@user} deleted"
 			redirect_to '/user_admin'
@@ -45,12 +48,16 @@ module SwellId
 		def edit
 			@user = User.friendly.find( params[:id] )
 
+			authorize( @user )
+
 			# @user_events = SwellMedia::UserEvent.where( guest_session_id: SwellMedia::GuestSession.where( user_id: @user.id ).pluck( :id ) ).order( created_at: :asc ).page(params[:page]).per(50)
 
 		end
 
 
 		def index
+
+			authorize( User )
 
 			sort_by = params[:sort_by] || 'created_at'
 			sort_dir = params[:sort_dir] || 'desc'
@@ -74,11 +81,13 @@ module SwellId
 
 		def update
 			@user = User.friendly.find( params[:id] )
+
 			@user.attributes = user_params
 
 			@user.avatar = params[:user][:avatar] if params[:user][:avatar].present?
 			@user.avatar_asset_url = params[:user][:avatar_asset_url] unless params[:user][:avatar_asset_url].blank?
 
+			authorize( @user )
 
 			if @user.save
 				set_flash "#{@user} updated"
@@ -87,6 +96,9 @@ module SwellId
 			end
 			redirect_back( fallback_location: '/admin' )
 		end
+
+
+
 
 		private
 			def user_params
