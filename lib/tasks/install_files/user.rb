@@ -5,6 +5,11 @@ class User < ApplicationRecord
 	enum status: { 'trash' => -50, 'revoked' =>- 20, 'active' => 1  }
 	enum role: { 'member' => 1, 'contributor' => 20, 'admin' => 30 }
 
+	devise 		:database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :authentication_keys => [:login]
+
+	before_save		:set_avatar
+
+	has_one_attached :avatar_attachment
 
 	### VALIDATIONS	---------------------------------------------
 	validates_uniqueness_of		:username, case_sensitive: false, allow_blank: true, if: Proc.new{ |u| u.username_changed? && u.registered? }
@@ -24,21 +29,10 @@ class User < ApplicationRecord
 		end
 	end
 
-	
+	protected
 
-	def avatar_asset_file=( file )
-		return false unless file.present?
-		asset = Pulitzer::ImageAsset.new(use: 'avatar', asset_type: 'image', status: 'active', parent_obj: self)
-		asset.uploader = file
-		asset.save
-		self.avatar = asset.try(:url)
-	end
+		def set_avatar
+			self.avatar = self.avatar_attachment.service_url if self.avatar_attachment.attached?
+		end
 
-	def avatar_asset_url=( url )
-		return false unless url.present?
-		asset = Pulitzer::ImageAsset.initialize_from_url(url, use: 'avatar', asset_type: 'image', status: 'active', parent_obj: self)
-		asset.save unless asset.nil?
-		puts "avatar_asset_url= asset: #{asset}"
-		self.avatar = asset.try(:url) || url
-	end
 end

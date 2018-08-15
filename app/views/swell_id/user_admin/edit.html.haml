@@ -35,41 +35,16 @@
 						= f.label :username, 'User Name'
 						= f.text_field :username, class: 'form-control'
 
-				.row{ style: 'margin: 1em auto;' }
-					.col-xs-2
-						= @user.avatar_tag class: 'img img-responsive img-rounded'
+				.row
 					.col-xs-8
 						.form-group
-							= f.label :avatar
-							= f.text_field :avatar, class: 'form-control'
-						.form-group
-							= f.label :avatar_asset_url, 'Remote Upload Avatar URL'
-							= f.text_field :avatar_asset_url, class: 'form-control'
-
-				.row
-					.col-xs-12
-						= f.label :short_bio
-						= f.text_field :short_bio, class: 'form-control'
-
-						= f.label :bio
-						= f.text_area :bio, class: 'form-control'
-				.row
-					.col-xs-12
-						= f.label :address1
-						= f.text_field :address1, class: 'form-control'
-
-						= f.label :address2
-						= f.text_field :address2, class: 'form-control'
-				.row
-					.col-xs-6
-						= f.label :city
-						= f.text_field :city, class: 'form-control'
-					.col-xs-3
-						= f.label :state
-						= f.text_field :state, class: 'form-control'
-					.col-xs-3
-						= f.label :zip
-						= f.text_field :zip, class: 'form-control'
+							= f.label :avatar_attachment, "Avatar Image"
+							= f.file_field :avatar_attachment
+					.col-xs-2
+						- if @user.avatar
+							= image_tag @user.avatar, class: 'img img-responsive img-rounded'
+							%a.btn.btn-default{ 'data-clipboard-text' => @user.avatar }
+								%i.fa.fa-clipboard
 
 			.col-xs-4
 				- if params[:pw].present?
@@ -83,10 +58,10 @@
 
 				.form-group
 					= f.label :status
-					= f.collection_select :status, SwellMedia.registered_user_class.constantize.statuses, :first, :first, {}, class: 'form-control'
+					= f.collection_select :status, User.statuses, :first, :first, {}, class: 'form-control'
 				.form-group
 					= f.label :role
-					= f.collection_select :role, SwellMedia.registered_user_class.constantize.roles, :first, :first, {}, class: 'form-control'
+					= f.collection_select :role, User.roles, :first, :first, {}, class: 'form-control'
 				.form-group
 					= f.label :tags_csv, 'Tags:'
 					= f.text_field :tags_csv, placeholder: 'Separate tags with commas', class: 'form-control'

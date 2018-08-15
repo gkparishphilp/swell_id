@@ -3,7 +3,7 @@ module SwellId
 	class UserAdminController < ApplicationAdminController
 
 		def create
-			
+
 			email = params[:user][:email]
 
 			user_attributes = { email: email, full_name: params[:user][:name], name: params[:user][:name].parameterize, ip: request.ip }
@@ -84,9 +84,6 @@ module SwellId
 
 			@user.attributes = user_params
 
-			@user.avatar = params[:user][:avatar] if params[:user][:avatar].present?
-			@user.avatar_asset_url = params[:user][:avatar_asset_url] unless params[:user][:avatar_asset_url].blank?
-
 			authorize( @user )
 
 			if @user.save
@@ -102,7 +99,7 @@ module SwellId
 
 		private
 			def user_params
-				params.require( :user ).permit( :name, :first_name, :last_name, :email, :short_bio, :bio, :shipping_name, :street, :street2, :city, :state, :zip, :phone, :role, :status, :tags_csv )
+				params.require( :user ).permit( :name, :first_name, :last_name, :email, :short_bio, :bio, :shipping_name, :street, :street2, :city, :state, :zip, :phone, :role, :status, :tags_csv, :avatar_attachment )
 			end
 
 	end
