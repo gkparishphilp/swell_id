@@ -34,26 +34,13 @@ module SwellId
 
 			def avatar_tag( opts={} )
 				tag = "<img src="
-				tag += "'" + self.avatar_url( opts ) + "' "
+				tag += "'" + self.avatar + "' "
 				for key, value in opts do
 					tag += key.to_s + "='" + value.to_s + "' "
 				end
 				tag += "/>"
 				return tag.html_safe
 
-			end
-
-			def avatar_url( opts={} )
-				# abstracts avatar path (uses gravatar if no avatar)
-				# call as avatar_url( use_gravatar: true ) to over-ride avatar and force gravatar
-				opts[:default] ||= 'identicon'
-				protocol = ( opts.present? && opts.delete( :protocol ) ) || 'https'
-
-				if opts[:use_gravatar] || self.avatar.blank?
-					return "#{protocol}://gravatar.com/avatar/" + Digest::MD5.hexdigest( self.email ) + "?d=#{opts[:default]}"
-				else
-					return self.avatar.gsub(/^(https|http)\:/, "#{protocol}:")
-				end
 			end
 
 

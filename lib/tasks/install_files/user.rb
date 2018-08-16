@@ -32,7 +32,12 @@ class User < ApplicationRecord
 	protected
 
 		def set_avatar
-			self.avatar = self.avatar_attachment.service_url if self.avatar_attachment.attached?
+			if self.avatar_attachment.attached?
+				self.avatar = self.avatar_attachment.service_url
+			else
+				self.avatar = "https://gravatar.com/avatar/" + Digest::MD5.hexdigest( self.email ) + "?d=identicon"
+			end
+
 		end
 
 end
