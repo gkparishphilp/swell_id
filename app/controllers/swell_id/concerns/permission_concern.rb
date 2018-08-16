@@ -4,7 +4,7 @@ module SwellId
 		module PermissionConcern
 			extend ActiveSupport::Concern
 			included do
-
+				helper_method :authorized?
 			end
 
 
@@ -20,11 +20,18 @@ module SwellId
 			# Instance Methods
 			protected
 
+				def authorized?( target, opts={} )
+					begin
+						return authorize( target, opts )
+					rescue ActionController::MethodNotAllowed => e
+						return false
+					end
+				end
+
 				def authorize( target, opts={} )
-					# todo
+
 					opts[:action] ||= self.action_name
-					opts[:controller] ||= self.class
-					# ToDO
+					opts[:controller] ||= "#{self.controller_path}_controller".camelcase.constantize
 
 					if current_user.present?
 						@current_user_role ||= "#{current_user.role}_role".camelcase.constantize.new
