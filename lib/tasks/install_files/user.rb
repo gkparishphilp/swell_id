@@ -35,7 +35,7 @@ class User < ApplicationRecord
 			if self.avatar_attachment.attached?
 				self.avatar = self.avatar_attachment.service_url
 			else
-				self.avatar = "https://gravatar.com/avatar/" + Digest::MD5.hexdigest( self.email ) + "?d=identicon"
+				self.avatar = "https://gravatar.com/avatar/" + Digest::MD5.hexdigest( self.email ) + "?d=retro&s=200"
 			end
 
 		end
