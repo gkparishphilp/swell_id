@@ -18,7 +18,15 @@
 
 	= form_for @user, url: user_admin_path( @user ), method: :put do |f|
 		.row
-			.col-xs-8
+			.col-xs-2
+				.form-group
+					= f.label :avatar_attachment, "Avatar"
+					- if @user.avatar
+
+						%a{ 'data-clipboard-text' => @user.avatar }
+							= image_tag @user.avatar, class: 'img img-responsive img-rounded center-block'
+					= f.file_field :avatar_attachment
+			.col-xs-6
 				.row
 					.col-xs-6
 						= f.label :first_name
@@ -35,16 +43,6 @@
 						= f.label :username, 'User Name'
 						= f.text_field :username, class: 'form-control'
 
-				.row
-					.col-xs-8
-						.form-group
-							= f.label :avatar_attachment, "Avatar Image"
-							= f.file_field :avatar_attachment
-					.col-xs-2
-						- if @user.avatar
-							= image_tag @user.avatar, class: 'img img-responsive img-rounded'
-							%a.btn.btn-default{ 'data-clipboard-text' => @user.avatar }
-								%i.fa.fa-clipboard
 
 			.col-xs-4
 				- if params[:pw].present?
