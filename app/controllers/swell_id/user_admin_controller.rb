@@ -6,7 +6,7 @@ module SwellId
 
 			email = params[:user][:email]
 
-			user_attributes = { email: email, full_name: params[:user][:name], name: params[:user][:name].parameterize, ip: request.ip }
+			user_attributes = { email: email, username: params[:user][:username].try(:parameterize), ip: request.ip }
 
 			if User.where( email: email ).first.present?
 				# this email is already registered for this site
@@ -99,7 +99,7 @@ module SwellId
 
 		private
 			def user_params
-				params.require( :user ).permit( :name, :first_name, :last_name, :email, :short_bio, :bio, :shipping_name, :street, :street2, :city, :state, :zip, :phone, :role, :status, :tags_csv, :avatar_attachment )
+				params.require( :user ).permit( :username, :first_name, :last_name, :email, :short_bio, :bio, :shipping_name, :street, :street2, :city, :state, :zip, :phone, :role, :status, :tags_csv, :avatar_attachment )
 			end
 
 	end

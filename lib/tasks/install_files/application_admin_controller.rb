@@ -1,5 +1,5 @@
-class ApplicationAdminController < ApplicationController 
-	
+class ApplicationAdminController < ApplicationController
+
 	include SwellId::Concerns::PermissionConcern
 
 	layout 'admin'

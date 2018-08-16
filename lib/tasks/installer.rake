@@ -13,8 +13,16 @@ namespace :swell_id do
 					'application_admin_controller.rb' => 'app/controllers',
 					'swell_id.rb' => 'config/initializers',
 					'routes.rb' => 'config',
-					'devise.rb' => 'config/initializers'
+					'devise.rb' => 'config/initializers',
+					'application_role.rb' => 'app/roles',
+					'admin_role.rb' => 'app/roles',
+					'contributor_role.rb' => 'app/roles',
+					'guest_role.rb' => 'app/roles',
+					'member_role.rb' => 'app/roles',
 		}
+
+
+		FileUtils::mkdir_p( File.join( Rails.root, 'app/roles' ) )
 
 		files.each do |filename, path|
 			puts "installing: #{path}/#{filename}"
