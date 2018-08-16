@@ -1,7 +1,7 @@
 class MemberRole < ApplicationRole
 
 	def authorize( target, options = {} )
-		raise ActionController::MethodNotAllowed.new('Not Allowed') if options[:controller].blank? || options[:controller] < ApplicationAdminController
+		raise ActionController::MethodNotAllowed.new('Not Allowed') unless options[:controller].present? && not( options[:controller] < ApplicationAdminController )
 		true
 	end
 
