@@ -4,10 +4,10 @@ module SwellId
 		module UserConcern
 			extend ActiveSupport::Concern
 
-			included do				
-		
+			included do
+
 				acts_as_taggable_array_on :tags
-				
+
 				devise 		:database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :authentication_keys => [:login]
 
 				include FriendlyId
@@ -23,7 +23,7 @@ module SwellId
 
 			module ClassMethods
 
-				
+
 
 
 			end
@@ -95,7 +95,7 @@ module SwellId
 
 			def to_local_tz( t )
 				return nil if t.nil?
-				zone - self.timezone || 'America/Los_Angeles'
+				zone = self.timezone || 'America/Los_Angeles'
 				t.in_time_zone( zone )
 			end
 
