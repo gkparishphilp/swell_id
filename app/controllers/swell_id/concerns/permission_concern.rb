@@ -30,8 +30,10 @@ module SwellId
 
 				def authorize( target, opts={} )
 
-					opts[:action] ||= self.action_name
-					opts[:controller] ||= "#{self.controller_path}_controller".camelcase.constantize
+					opts[:request]		||= request
+					opts[:params]			||= params
+					opts[:action]			||= self.action_name
+					opts[:controller]	||= "#{self.controller_path}_controller".camelcase.constantize
 
 					if current_user.present?
 						@current_user_role ||= "#{current_user.role}_role".camelcase.constantize.new
