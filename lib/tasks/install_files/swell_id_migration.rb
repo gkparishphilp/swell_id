@@ -6,20 +6,6 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 		enable_extension 'uuid-ossp'
 
 
-		create_table :emails, force: true do |t|
-			t.references 		:user_id
-			t.string			:address
-			t.integer 			:status, default: 0
-			t.string			:first_name
-			t.string			:last_name
-			t.hstore			:properties, 		default: {}
-			t.timestamps
-		end
-		add_index :emails, [:address, :status]
-		add_index :emails, :status
-		add_index :emails, :address, unique: true
-
-
 		create_table :friendly_id_slugs do |t|
 			t.string   :slug, 				null: false
 			t.integer  :sluggable_id, 		null: false
@@ -38,7 +24,7 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 			t.references	:geo_state
 			t.references	:geo_country
 			t.integer 		:status
-			t.string 		:hash_code
+			t.text			:hash_code
 			t.string		:address_type
 			t.string		:title
 			t.string		:first_name
@@ -53,6 +39,7 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 			t.float 		:longitude
 			t.boolean		:validated, 			default: false
 			t.boolean		:preferred, 			default: false
+			t.boolean 		:valid_to_ship,			default: true
 			t.timestamps
 		end
 		add_index :geo_addresses, [ :geo_country_id, :geo_state_id ]
@@ -75,8 +62,8 @@ class SwellIdMigration < ActiveRecord::Migration[5.1]
 		create_table :identifiers do |t|
 			t.references 	:parent_obj, polymorphic: true
 			t.string		:provider
-			t.string		:label 
-			t.string 		:identifier 
+			t.string		:label
+			t.string 		:identifier
 			t.hstore		:properties, 			default: {}
 			t.timestamps
 		end

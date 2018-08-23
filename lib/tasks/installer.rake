@@ -5,7 +5,6 @@ namespace :swell_id do
 
 		files = {
 					'user.rb' => 'app/models',
-					'email.rb' => 'app/models',
 					'geo_address.rb' => 'app/models',
 					'geo_state.rb' => 'app/models',
 					'geo_country.rb' => 'app/models',

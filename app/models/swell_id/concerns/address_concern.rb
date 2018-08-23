@@ -47,7 +47,7 @@ module SwellId
 			protected
 
 				def hash!
-					str = "#{self.first_name}#{self.last_name}#{self.street}#{self.street2}#{self.city}#{self.state_abbrev}#{self.zip}"
+					str = "#{self.street}#{self.street2}#{self.city}#{self.state_abbrev}#{self.zip}"
 					str = str.gsub( /\W/, '' ).downcase
 					self.update( hash_code: str )
 				end
