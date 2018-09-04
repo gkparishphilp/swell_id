@@ -18,6 +18,7 @@ namespace :swell_id do
 					'contributor_role.rb' => 'app/roles',
 					'guest_role.rb' => 'app/roles',
 					'member_role.rb' => 'app/roles',
+					'application_service.rb' => 'app/services',
 		}
 
 
