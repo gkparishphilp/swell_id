@@ -13,6 +13,7 @@ class User < ApplicationRecord
 
 	### VALIDATIONS	---------------------------------------------
 	validates_uniqueness_of		:username, case_sensitive: false, allow_blank: true, if: Proc.new{ |u| u.username_changed? && u.registered? }
+	validates_presence_of 		:email
 	validates_uniqueness_of		:email, case_sensitive: false, if: :email_changed?
 	validates_format_of			:email, with: Devise.email_regexp, if: :email_changed?
 

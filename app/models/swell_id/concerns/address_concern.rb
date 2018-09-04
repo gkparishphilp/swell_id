@@ -60,6 +60,7 @@ module SwellId
 
 				def calculate_hash_code
 					"#{(street || '').strip.downcase.gsub(/[^A-Za-z0-9]/,'')};#{(street2 || '').strip.downcase.gsub(/[^A-Za-z0-9]/,'')};#{(zip || '').strip.downcase.gsub(/[^A-Za-z0-9]/,'')};#{(city || '').strip.downcase.gsub(/[^A-Za-z0-9]/,'')};#{(state_abbrev || '').strip.downcase.gsub(/[^A-Za-z0-9]/,'')};#{(geo_country.abbrev.strip.downcase.gsub(/[^A-Za-z0-9]/,'')}"
+
 				end
 
 		end
