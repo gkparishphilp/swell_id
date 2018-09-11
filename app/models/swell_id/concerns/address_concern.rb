@@ -17,6 +17,18 @@ module SwellId
 
 
 
+				def calculate_hash_code( geo_address )
+					parts = [
+						geo_address.street,
+						geo_address.street2,
+						geo_address.zip,
+						geo_address.city,
+						geo_address.state_abbrev,
+						geo_address.geo_country.abbrev,
+					]
+					parts.collect{|part| (part || '').downcase.gsub(/[^A-Za-z0-9]/,'') }.join(';')
+				end
+
 			end
 
 
@@ -25,18 +37,6 @@ module SwellId
 
 			def calculate_hash_code
 				self.class.calculate_hash_code( self )
-			end
-
-			def self.calculate_hash_code( geo_address )
-				parts = [
-					geo_address.street,
-					geo_address.street2,
-					geo_address.zip,
-					geo_address.city,
-					geo_address.state_abbrev,
-					geo_address.geo_country.abbrev,
-				]
-				parts.collect{|part| (part || '').downcase.gsub(/[^A-Za-z0-9]/,'') }.join(';')
 			end
 
 			def full_name
