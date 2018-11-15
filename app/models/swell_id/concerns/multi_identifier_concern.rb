@@ -4,7 +4,9 @@ module SwellId
 		module MultiIdentifierConcern
 			extend ActiveSupport::Concern
 
-			has_many :identifers, as: :parent_obj
+			included do
+				has_many :identifers, as: :parent_obj
+			end
 
 			####################################################
 			# Class Methods
