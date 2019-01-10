@@ -18,6 +18,7 @@ module GeoAddressSearchable
 				indexes :state_abbrev, analyzer: 'english', index_options: 'offsets'
 				indexes :country_name, analyzer: 'english', index_options: 'offsets'
 				indexes :country_abbrev, analyzer: 'english', index_options: 'offsets'
+				indexes :public, type: 'boolean'
 			end
 		end
 	end

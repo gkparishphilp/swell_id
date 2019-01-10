@@ -17,6 +17,7 @@ module UserSearchable
 				indexes :bio, analyzer: 'english', index_options: 'offsets'
 				indexes :full_text, analyzer: 'english', index_options: 'offsets'
 				indexes :published?, type: 'boolean'
+				indexes :public, type: 'boolean'
 			end
 		end
 	end
