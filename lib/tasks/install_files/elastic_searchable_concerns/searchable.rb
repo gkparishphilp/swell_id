@@ -129,7 +129,7 @@ module Searchable
 	end
 
 	def self.searchable_classes
-		[] # [Bazaar::Discount,Bazaar::Order,Bazaar::Product,Bazaar::SubscriptionPlan,Bazaar::Subscription,Pulitzer::Media,BazaarMedia,GeoAddress,User]
+		[] # [Bazaar::Discount,Bazaar::Order,Bazaar::Product,Bazaar::SubscriptionPlan,Bazaar::Subscription,Pulitzer::Media,Scuttlebutt::DiscussionTopic,BazaarMedia,GeoAddress,User]
 	end
 
 	module ClassMethods
@@ -139,7 +139,7 @@ module Searchable
 			Searchable.public_simple_search( term, options )
 		end
 
-		def search( query, options = nil )
+		def search( query, options = {} )
 			options[:in] = [self]
 			Searchable.search( query, options )
 		end
