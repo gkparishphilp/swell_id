@@ -39,6 +39,14 @@ module SwellId
 				self.class.calculate_hash_code( self )
 			end
 
+			def find_duplicates
+				GeoAddress.where( hash_code: self.calculate_hash_code ).where("LOWER(first_name) = :first_name AND LOWER(last_name) = :last_name", first_name: self.first_name.try(:downcase), last_name: self.last_name.try(:downcase) )
+			end
+
+			def find_original
+				find_duplicates.order( id: :asc ).first
+			end
+
 			def full_name
 				"#{self.first_name} #{self.last_name}".strip
 			end
