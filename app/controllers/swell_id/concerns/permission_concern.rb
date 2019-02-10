@@ -36,9 +36,9 @@ module SwellId
 					opts[:controller]	||= "#{self.controller_path}_controller".camelcase.constantize
 
 					if current_user.present?
-						@current_user_role ||= "#{current_user.role}_role".camelcase.constantize.new
+						@current_user_role ||= "#{current_user.role}_role".camelcase.constantize.new( current_user: current_user )
 					else
-						@current_user_role ||= GuestRole.new
+						@current_user_role ||= GuestRole.new( current_user: current_user )
 					end
 
 					@current_user_role.authorize( target, opts )
