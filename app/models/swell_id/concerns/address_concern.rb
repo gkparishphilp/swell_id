@@ -39,6 +39,10 @@ module SwellId
 				self.class.calculate_hash_code( self )
 			end
 
+			def equals( geo_address )
+				self.user == geo_address.user && self.calculate_hash_code == geo_address.calculate_hash_code && self.first_name.try(:downcase).to_s == geo_address.first_name.try(:downcase).to_s && self.last_name.try(:downcase).to_s == geo_address.last_name.try(:downcase).to_s
+			end
+
 			def find_duplicates
 				GeoAddress.where( hash_code: self.calculate_hash_code, user: self.user ).where("LOWER(first_name) = :first_name AND LOWER(last_name) = :last_name", first_name: self.first_name.try(:downcase), last_name: self.last_name.try(:downcase) )
 			end
@@ -79,7 +83,7 @@ module SwellId
 			protected
 
 				def set_hash_code
-					hash_code = calculate_hash_code
+					write_attribute(:hash_code, calculate_hash_code)
 				end
 
 
