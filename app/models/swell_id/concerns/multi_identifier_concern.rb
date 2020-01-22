@@ -5,7 +5,7 @@ module SwellId
 			extend ActiveSupport::Concern
 
 			included do
-				has_many :identifers, as: :parent_obj
+				has_many :identifiers, as: :parent_obj
 			end
 
 			####################################################
@@ -14,7 +14,7 @@ module SwellId
 			module ClassMethods
 
 				def find_by_identifier( identifier, args = {} )
-					self.joins(:identifiers).merge(Identifier.where( args.merge( identifier: identifier ) ))
+					self.joins(:identifiers).merge(Identifier.where( args.merge( identifier: identifier ) )).first
 				end
 
 			end
