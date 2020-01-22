@@ -19,10 +19,12 @@ namespace :swell_id do
 					'guest_role.rb' => 'app/roles',
 					'member_role.rb' => 'app/roles',
 					'application_service.rb' => 'app/services',
+					'database.yml' => 'config'
 		}
 
 
 		FileUtils::mkdir_p( File.join( Rails.root, 'app/roles' ) )
+		FileUtils::mkdir_p( File.join( Rails.root, 'app/services' ) )
 
 		files.each do |filename, path|
 			puts "installing: #{path}/#{filename}"
