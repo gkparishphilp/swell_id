@@ -39,6 +39,14 @@ module SwellId
 				self.class.calculate_hash_code( self )
 			end
 
+			def canonical_find
+				GeoAddress.where( hash_code: self.calculate_hash_code ).first
+			end
+
+			def canonical_find_or_self
+				canonical_find || self
+			end
+
 			def equals( geo_address )
 				self.user == geo_address.user && self.calculate_hash_code == geo_address.calculate_hash_code && self.first_name.try(:downcase).to_s == geo_address.first_name.try(:downcase).to_s && self.last_name.try(:downcase).to_s == geo_address.last_name.try(:downcase).to_s
 			end
