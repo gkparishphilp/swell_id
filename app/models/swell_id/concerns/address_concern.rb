@@ -24,7 +24,7 @@ module SwellId
 						geo_address.zip,
 						geo_address.city,
 						geo_address.state_abbrev,
-						geo_address.geo_country.abbrev,
+						geo_address.geo_country.try(:abbrev),
 					]
 					parts.collect{|part| (part || '').downcase.gsub(/[^A-Za-z0-9]/,'') }.join(';')
 				end

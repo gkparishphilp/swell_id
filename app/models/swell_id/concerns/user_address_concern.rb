@@ -34,27 +34,27 @@ module SwellId
 
 			module ClassMethods
 
-				def self.canonical_find_or_create_with_cannonical_geo_address( attributes )
+				def canonical_find_or_create_with_cannonical_geo_address( attributes )
 					user_address = self.new_with_cannonical_geo_address( attributes )
 					user_address = user_address.canonical_find_or_self
 					user_address.save
 					user_address
 				end
 
-				def self.create_with_cannonical_geo_address( attributes )
+				def create_with_cannonical_geo_address( attributes )
 					user_address = self.new_with_cannonical_geo_address( attributes )
 					user_address.save
 					user_address
 				end
 
-				def self.new_with_geo_address( attributes )
-					user_address = UserAddress.new( geo_address: UserAddress.new_with_geo_address )
+				def new_with_geo_address( attributes )
+					user_address = UserAddress.new( geo_address: GeoAddress.new )
 					user_address.attributes = attributes
 					user_address
 				end
 
-				def self.new_with_cannonical_geo_address( attributes )
-					user_address = UserAddress.new( geo_address: UserAddress.new_with_geo_address )
+				def new_with_cannonical_geo_address( attributes )
+					user_address = UserAddress.new( geo_address: GeoAddress.new )
 					user_address.attributes = attributes
 					user_address.canonical_geo_address!
 					user_address
