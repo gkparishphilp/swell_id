@@ -15,7 +15,9 @@ module SwellId
 
 			module ClassMethods
 
-
+				def canonical
+					GeoAddress.unscoped.where( id: self.group(:hash_code).select("MIN(geo_addresses.id)") )
+				end
 
 				def calculate_hash_code( geo_address )
 					parts = [

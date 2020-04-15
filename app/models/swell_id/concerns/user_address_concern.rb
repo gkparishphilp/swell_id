@@ -10,8 +10,12 @@ module SwellId
 
 				before_save :canonical_geo_address!
 
+				delegate :geo_state, to: :geo_address, allow_nil: true, prefix: false
+				delegate :geo_state=, to: :geo_address, prefix: false
 				delegate :geo_state_id, to: :geo_address, allow_nil: true, prefix: false
 				delegate :geo_state_id=, to: :geo_address, prefix: false
+				delegate :geo_country, to: :geo_address, allow_nil: true, prefix: false
+				delegate :geo_country=, to: :geo_address, prefix: false
 				delegate :geo_country_id, to: :geo_address, allow_nil: true, prefix: false
 				delegate :geo_country_id=, to: :geo_address, prefix: false
 				delegate :street, to: :geo_address, allow_nil: true, prefix: false
@@ -22,6 +26,8 @@ module SwellId
 				delegate :city=, to: :geo_address, prefix: false
 				delegate :state, to: :geo_address, allow_nil: true, prefix: false
 				delegate :state=, to: :geo_address, prefix: false
+				delegate :state_abbrev, to: :geo_address, allow_nil: true, prefix: false
+				delegate :state_abbrev=, to: :geo_address, prefix: false
 				delegate :zip, to: :geo_address, allow_nil: true, prefix: false
 				delegate :zip=, to: :geo_address, prefix: false
 
@@ -33,6 +39,16 @@ module SwellId
 			# Class Methods
 
 			module ClassMethods
+
+				def canonical
+					UserAddress.unscoped.where( id: self.joins(:geo_address).group('geo_addresses.hash_code',:user_id,"lower(user_addresses.first_name)","lower(user_addresses.last_name)","lower(user_addresses.phone)").select("MIN(user_addresses.id)") )
+				end
+
+				def canonical_find_or_new_with_cannonical_geo_address( attributes )
+					user_address = self.new_with_cannonical_geo_address( attributes )
+					user_address = user_address.canonical_find_or_self
+					user_address
+				end
 
 				def canonical_find_or_create_with_cannonical_geo_address( attributes )
 					user_address = self.new_with_cannonical_geo_address( attributes )
@@ -91,6 +107,22 @@ module SwellId
 
 			def canonical_geo_address!
 				self.geo_address = self.geo_address.canonical_find || self.geo_address
+			end
+
+			def full_name
+				"#{self.first_name} #{self.last_name}".strip
+			end
+
+			def to_html
+				addr = "#{self.full_name}<br>#{self.street}"
+				addr = addr + "<br>#{self.street2}" if self.street2.present?
+				addr = addr + "<br>#{self.city}, #{self.state_abbrev} #{self.zip}"
+				addr = addr + "<br>#{self.geo_country.try(:name)}"
+				return addr
+			end
+
+			def to_s
+				"#{street}#{street2.present? ? ", #{street2}" : ""}, #{city}, #{state_abbrev}, #{zip}, #{country_abbrev}"
 			end
 
 		end
