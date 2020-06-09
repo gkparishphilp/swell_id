@@ -28,6 +28,8 @@ module SwellId
 				delegate :state=, to: :geo_address, prefix: false
 				delegate :state_abbrev, to: :geo_address, allow_nil: true, prefix: false
 				delegate :state_abbrev=, to: :geo_address, prefix: false
+				delegate :state_name, to: :geo_address, allow_nil: true, prefix: false
+				delegate :state_name=, to: :geo_address, prefix: false
 				delegate :zip, to: :geo_address, allow_nil: true, prefix: false
 				delegate :zip=, to: :geo_address, prefix: false
 
