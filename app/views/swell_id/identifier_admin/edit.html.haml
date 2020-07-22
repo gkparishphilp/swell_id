@@ -1,0 +1,37 @@
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					= link_to 'Identifier Admin', identifier_admin_index_path
+				%li
+					%strong
+						Edit
+						= @identifier.to_s
+		.col-xs-2
+			%a.btn.btn-danger{ href: identifier_admin_path( @identifier ), data: { method: 'delete', confirm: 'Are you sure?' } }
+				Delete
+
+
+
+	= form_for @identifier, url: identifier_admin_path( @identifier ), method: :put do |f|
+		.row
+			.col-xs-6
+				.form-group
+					= f.label :provider
+					= f.text_field :provider, class: 'form-control'
+			.col-xs-6
+				.form-group
+					= f.label :label
+					= f.text_field :label, class: 'form-control'
+
+		.row
+			.col-xs-12
+				.form-group
+					= f.label :identifier
+					= f.text_field :identifier, class: 'form-control'
+
+				.input-group
+					= f.submit 'Update', class: 'btn btn-primary'

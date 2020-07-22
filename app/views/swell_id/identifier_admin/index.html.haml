@@ -1,0 +1,82 @@
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					%strong
+						Identifier Admin
+
+		-# .col-xs-2
+			%a.btn.btn-success{ href: new_identifier_admin_path() }
+				%i.fa.fa-plus-square
+				New
+	.row
+		.col-xs-6
+			= raw paginate @identifiers
+		.col-xs-6
+			= form_tag identifier_admin_index_path, method: :get, class: 'pull-right form-inline' do
+				= text_field_tag :q, params[:q], class: 'form-control'
+				= submit_tag 'Search', class: 'btn btn-primary'
+				= link_to 'Clear', identifier_admin_index_path, class: 'btn btn-default btn-xs'
+
+	.row
+		.col-xs-12
+			%table.table
+				%thead
+					%th Parent Type
+					%th Parent Name
+					%th
+						Provider
+						%a{ href: identifier_admin_index_path( sort_by: 'provider', sort_dir: 'asc' ) }
+							%i.fa.fa-arrow-up
+						%a{ href: identifier_admin_index_path( sort_by: 'provider', sort_dir: 'desc' ) }
+							%i.fa.fa-arrow-down
+					%th
+						Label
+						%a{ href: identifier_admin_index_path( sort_by: 'label', sort_dir: 'asc' ) }
+							%i.fa.fa-arrow-up
+						%a{ href: identifier_admin_index_path( sort_by: 'label', sort_dir: 'desc' ) }
+							%i.fa.fa-arrow-down
+					%th
+						Identifier
+						%a{ href: identifier_admin_index_path( sort_by: 'identifier', sort_dir: 'asc' ) }
+							%i.fa.fa-arrow-up
+						%a{ href: identifier_admin_index_path( sort_by: 'identifier', sort_dir: 'desc' ) }
+							%i.fa.fa-arrow-down
+					%th
+				%tbody
+					- if @identifiers.blank?
+						%tr
+							%td{ colspan: 5 }
+								\- No Results -
+					- @identifiers.each do |identifier|
+						%tr
+							%td
+								= identifier.parent_obj.class.name.to_s.gsub(/\:\:/,' > ')
+							%td
+								= identifier.parent_obj.to_s
+							%td
+								= identifier.provider
+							%td
+								= identifier.label
+							%td
+								= identifier.identifier
+
+							%td
+								.btn-group
+									%button.btn.btn-mini.btn-default.dropdown-toggle{ data: { toggle: :dropdown } }
+										%i.fa.fa-cog
+										%b.caret
+									%ul.dropdown-menu
+										%li
+											%a{ href: edit_identifier_admin_path( identifier.id ) }
+												%i.fa.fa-pencil
+												Edit
+										%li.divider
+										%li
+											%a{ href: identifier_admin_path( identifier ), data: { method: 'delete', confirm: 'Are you sure?' } }
+												%i.fa.fa-trash-o
+												Delete!

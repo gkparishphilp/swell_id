@@ -1,0 +1,40 @@
+
+.well.white-well
+	.pull-right
+		%a.btn.btn-success{ href: swell_id.new_identifier_admin_path( identifier: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id } ) }
+			%i.fa.fa-plus-square
+			New
+	%h4 Identifiers
+
+	%table.table.table-light.table-bordered{ style: 'margin:0;' }
+		%thead
+			%th Provider
+			%th Label
+			%th Identifier
+			%th &nbsp;
+		%tbody
+			- if (identifiers = Identifier.where( parent_obj: parent_obj )).present?
+				- identifiers.each do |identifier|
+					%tr
+						%td= identifier.provider
+						%td= identifier.label
+						%td= identifier.identifier
+						%td
+							.btn-group
+								%button.btn.btn-mini.btn-default.dropdown-toggle{ data: { toggle: :dropdown } }
+									%i.fa.fa-cog
+									%b.caret
+								%ul.dropdown-menu
+									%li
+										%a{ href: swell_id.edit_identifier_admin_path( identifier.id ) }
+											%i.fa.fa-pencil
+											Edit
+									%li.divider
+									%li
+										%a{ href: swell_id.identifier_admin_path( identifier ), data: { method: 'delete', confirm: 'Are you sure?' } }
+											%i.fa.fa-trash-o
+											Delete!
+			- else
+				%tr
+					%td{ colspan: 4 }
+						\- No Offers -
