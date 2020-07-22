@@ -1,4 +1,4 @@
-module SwellId::IdentifierAdminController
+module SwellId
 
 	class IdentifierAdminController < ApplicationAdminController
 
