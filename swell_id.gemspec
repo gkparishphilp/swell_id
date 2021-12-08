@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "acts-as-taggable-array-on"
   s.add_dependency "devise"
-  s.add_dependency "friendly_id", '~> 5.1.0'
+  s.add_dependency "friendly_id", '>= 5.1.0'
 
 
   s.add_development_dependency "sqlite3"
