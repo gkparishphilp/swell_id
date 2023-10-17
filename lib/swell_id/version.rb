@@ -1,3 +1,3 @@
 module SwellId
-  VERSION = '1.8.2'
+  VERSION = '3.0.0'
 end

@@ -41,8 +41,7 @@ module SwellId
 					[ item_type, item_id ]
 				end
 
-				def belongs_to(name, scope = nil, options = {})
-
+				def belongs_to(name, scope = nil, **options)
 					if (scope.is_a?( Hash ) && scope[:polymorphic]) || (options.is_a?( Hash ) && options[:polymorphic])
 
 						define_method "#{name}_polymorphic_id" do
@@ -58,14 +57,14 @@ module SwellId
 
 
 						if options.present?
-							super(name,scope,options)
+							super( name, scope, &options )
 						else
-							super(name, scope)
+							super( name, scope )
 						end
 					elsif options.present?
-						super(name, scope, options)
+						super( name, scope, &options )
 					else
-						super(name, scope)
+						super( name, scope )
 					end
 				end
 
