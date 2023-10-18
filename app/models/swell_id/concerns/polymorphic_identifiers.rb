@@ -55,14 +55,18 @@ module SwellId
 							self.try( "#{name}_id=", value_id )
 						end
 
-
 						if options.present?
-							super( name, scope, &options )
+							super( name, scope, **options )
 						else
 							super( name, scope )
 						end
 					elsif options.present?
-						super( name, scope, &options )
+						
+						if scope.present?
+							super( name, scope, **options )
+						else
+							super( name, **options )
+						end
 					else
 						super( name, scope )
 					end
