@@ -50,7 +50,7 @@ module SwellId
 			sort_by = params[:sort_by] || 'created_at'
 			sort_dir = params[:sort_dir] || 'desc'
 
-			@identifiers = Identifier.order( "#{sort_by} #{sort_dir}" )
+			@identifiers = Identifier.order( Arel.sql("#{sort_by} #{sort_dir}") )
 
 
 			( params[:filters] || [] ).each do |key, value|
