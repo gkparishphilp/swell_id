@@ -116,16 +116,28 @@ module SwellId
 				# persist for every record referencing this GeoAddress. The hash_code
 				# is excluded because it'll be recomputed by the before_save
 				# callback; id, timestamps, and user_id are excluded to protect
-				# record identity. Without this, the canonical_find match drops
-				# any non-alphanumeric edits silently — because hash_code is
-				# computed from alphanumeric-only versions of the address fields.
-				canonical.assign_attributes(
-					self.geo_address.attributes.except( 'id', 'created_at', 'updated_at', 'hash_code', 'user_id' )
-				)
+				# record identity. Blank string values are skipped so a partial
+				# submission (e.g. the checkout /calculate.js endpoint firing while
+				# the user is still typing) can't clobber required fields like
+				# street/city/zip on a previously valid canonical record.
+				attrs = self.geo_address.attributes
+					.except( 'id', 'created_at', 'updated_at', 'hash_code', 'user_id' )
+					.reject { |_k, v| v.is_a?(String) && v.strip.empty? }
+
+				canonical.assign_attributes( attrs )
 				# Persist immediately so downstream lookups (e.g. canonical_find_or_self
 				# loading a matching UserAddress whose geo_address association reads
 				# fresh from DB) see the corrected values rather than the stale row.
-				canonical.save! if canonical.changed?
+				#
+				# Defense-in-depth: only save when the overlay produces a valid
+				# canonical record. Even with blanks skipped above, a canonical
+				# record could have pre-existing invalid data (legacy rows that
+				# bypassed validations) — saving it would raise RecordInvalid and
+				# crash the calling request. Validate first.
+				if canonical.changed?
+					canonical.save if canonical.valid?
+				end
+
 				self.geo_address = canonical
 			end
 
