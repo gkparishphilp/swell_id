@@ -108,7 +108,25 @@ module SwellId
 			end
 
 			def canonical_geo_address!
-				self.geo_address = self.geo_address.canonical_find || self.geo_address
+				canonical = self.geo_address.canonical_find
+				return unless canonical
+
+				# Apply the user's submitted attributes onto the canonical record so
+				# cosmetic edits (typo fixes, trailing commas, casing, whitespace)
+				# persist for every record referencing this GeoAddress. The hash_code
+				# is excluded because it'll be recomputed by the before_save
+				# callback; id, timestamps, and user_id are excluded to protect
+				# record identity. Without this, the canonical_find match drops
+				# any non-alphanumeric edits silently — because hash_code is
+				# computed from alphanumeric-only versions of the address fields.
+				canonical.assign_attributes(
+					self.geo_address.attributes.except( 'id', 'created_at', 'updated_at', 'hash_code', 'user_id' )
+				)
+				# Persist immediately so downstream lookups (e.g. canonical_find_or_self
+				# loading a matching UserAddress whose geo_address association reads
+				# fresh from DB) see the corrected values rather than the stale row.
+				canonical.save! if canonical.changed?
+				self.geo_address = canonical
 			end
 
 			def full_name
